@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="graph.drawRect()">框选</button>
+<button onclick="graph.markNodes()">标注所选</button>
+<button onclick="toggleLinkType()">时长/频次切换</button>
+<button onclick="graph.utils.toggleCritical()">显示关键路径</button>
+<input onkeyup="graph.searchNode(this.value)" placeholder="搜索号码/终端">
+<button onclick="graph.layout()">重新布局</button>
+<button onclick="graph.clear()">清空</button>
+<button onclick="graph.deleteNodes()">删除所选</button>
+<button onclick="graph.revertLastDel()">撤销删除</button>
+<div id="graph" style="width: 1200px; height: 600px;"></div>
+<script src="data.js"></script>
+<script>
+    let linkType = 'num';    // 与数据中的字段相同
+    let graph;
+    window.toggleLinkType = function() {
+        linkType = linkType === 'num' ? 'mc' : 'num';  // 与数据中的字段相同
+        graph.setOption({
+            linkType: linkType
+        })
+    };
+    window.onload = function () {
+        graph = relationGraph.init(document.getElementById('graph'));
+        graph.setOption({
+            imageUrl: 'images/',
+            linkType: linkType,
+            rootData: [
+                {
+                    name: 'TERMINAL-111',
+                    type: 'terminal'
+                },{
+                    name: 'TERMINAL-66',
+                    type: 'terminal'
+                }
+            ],
+            data: data.result,
+            leafData: data.leafLine,
+            criticalData: ['TERMINAL-365', 'TERMINAL-111', 'TERMINAL-111']
+        });
+    };
+</script>
+</body>
+</html>
